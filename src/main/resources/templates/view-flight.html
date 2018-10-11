@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>View Pilot</title>
+</head>
+
+<body>
+	<h3 th:text="'Flight Number ' + ': ' + ${flight[0].flightNumber}"></h3>
+	
+	<h2>Daftar Pilot</h2>
+	<ol th:each="oneflight : ${flight}">
+		<h3 th:text="'Name ' + ': ' + ${oneflight.pilot.name}"></h3>
+		<h3 th:text="'License Number ' + ': ' + ${oneflight.pilot.licenseNumber}"></h3>
+	</ol>
+</body>

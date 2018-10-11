@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Add Flight</title>
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	
+	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+	<nav th:replace="fragments/fragment :: navbar(pageName='TAMBAH PENERBANGAN')"></nav>
+
+	<div class="container-fluid">
+	<h2>Hello!</h2>
+	<form th:action="@{/flight/add}" th:object="${pilot}" method="POST">
+		<table>
+			<thead>
+				<tr>
+					<th>Flight Number</th>
+					<th>Origin</th>
+					<th>Destination</th>
+					<th>Time</th>
+					<th>
+						<button type="submit" name="addRow">Add Flight</button>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="flight,iterationStatus : *{pilotFlight}">
+					<td>
+						<input type="text" th:field="*{pilotFlight[__${iterationStatus.index}__].flightNumber" />
+					</td>
+					<td>
+						<input type="text" th:field="*{pilotFlight[__${iterationStatus.index}__].origin" />
+					</td>
+					<td>
+						<input type="text" th:field="*{pilotFlight[__${iterationStatus.index}__].destination" />
+					</td>
+					<td>
+						<input type="date" th:field="*{pilotFlight[__${iterationStatus.index}__].time" />
+					</td>
+					<td>
+						<button type="submit" name="removeRow" 
+							th:value="${iterationStatus.index}">Remove Flight</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<button type="submit">Submit</button>
+	</form>
+	</div>
+</body>
+
+</html>
