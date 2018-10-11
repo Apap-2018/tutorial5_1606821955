@@ -6,6 +6,8 @@ import com.apap.tutorial5.service.FlightService;
 import com.apap.tutorial5.service.PilotService;
 
 import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,40 +31,61 @@ public class FlightController {
 	@Autowired
 	private FlightService flightService;
 	
+	@Autowired
+	private PilotService pilotService;
+	
+	
 	@RequestMapping(value = "/flight/add/{licenseNumber}", method = RequestMethod.GET)
-	private String add(@PathVariable(value = "licenseNumber") String licenseNumber, Model model) {
+	private String add(@PathVariable(value = "licenseNumber") String licenseNumber, Model model) throws ParseException {
 		PilotModel pilot = new PilotModel();
 		pilot.setPilotFlight(new ArrayList<FlightModel>());
-		pilot.getPilotFlight().add(new FlightModel());
+		
+		FlightModel flight = new FlightModel();
+		flight.setTime(flightService.getTodayDefaultFlightDate());
+		pilot.getPilotFlight().add(flight);
 		
 		model.addAttribute("pilot", pilot);
+		model.addAttribute("licenseNumber", licenseNumber);
 		return "addFlight";
 	}
 	
 	@RequestMapping(value = "/flight/add/{licenseNumber}", params={"addRow"})
-	public String addRow(@ModelAttribute PilotModel pilot, Model model) {
-		pilot.getPilotFlight().add(new FlightModel());
-		model.addAttribute("pilot", pilot);
+	public String addRow(@PathVariable(value = "licenseNumber") String licenseNumber,
+					@ModelAttribute PilotModel pilot, Model model) throws ParseException {
+		FlightModel flight = new FlightModel();
+		flight.setTime(flightService.getTodayDefaultFlightDate());
+		pilot.getPilotFlight().add(flight);
 		
+		model.addAttribute("pilot", pilot);
+		model.addAttribute("licenseNumber", licenseNumber);
 		return "addFlight";
 	}
 	
 	@RequestMapping(value = "/flight/add/{licenseNumber}", params={"removeRow"})
-	public String removeRow(@ModelAttribute PilotModel pilot, Model model,
+	public String removeRow(@PathVariable(value = "licenseNumber") String licenseNumber,
+						@ModelAttribute PilotModel pilot, Model model,
 						final BindingResult bindingResult, final HttpServletRequest req) {
-		final Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
-		pilot.getPilotFlight().remove(rowId.intValue());
+		PilotModel pilotOld = pilotService.getPilotDetailByLicenseNumber(licenseNumber);
+		final Integer intId = Integer.valueOf(req.getParameter("removeRow"));
 		
+		pilot.getPilotFlight().get(intId.intValue()).setPilot(pilotOld);
+		pilot.getPilotFlight().remove(intId.intValue());
+		
+		model.addAttribute("licenseNumber", licenseNumber);
 		return "addFlight";
 	}
 	
-	@RequestMapping(value = "/flight/add", method = RequestMethod.POST)
-	private String addFlightSubmit(@ModelAttribute PilotModel pilot) {
+	@RequestMapping(value = "/flight/add/{licenseNumber}", method = RequestMethod.POST, params={"save"})
+	private String addFlightSubmit(@PathVariable(value = "licenseNumber") String licenseNumber,
+						@ModelAttribute PilotModel pilot, Model model) {
+		PilotModel pilotOld = pilotService.getPilotDetailByLicenseNumber(licenseNumber);
+		
 		for (FlightModel flight : pilot.getPilotFlight()) {
-			flight.setPilot(pilot);
+			flight.setPilot(pilotOld);
 			flightService.addFlight(flight);
 		}
 		
+		model.addAttribute("licenseNumber", licenseNumber);
 		return "add";
 	}
 	

@@ -15,7 +15,7 @@
 
 	<div class="container-fluid">
 	<h2>Hello!</h2>
-	<form th:action="@{/flight/add}" th:object="${pilot}" method="POST">
+	<form th:action="@{'/flight/add/' + ${licenseNumber}}" th:object="${pilot}" method="POST">
 		<table>
 			<thead>
 				<tr>
@@ -41,10 +41,6 @@
 					</td>
 					<td>
 						<input type="date" name="time" th:field="*{pilotFlight[__${iterationStatus.index}__].time}" />
-					</td>
-					<td>
-						<button type="submit" name="removeRow" 
-							th:value="${iterationStatus.index}">Remove Flight</button>
 					</td>
 				</tr>
 			</tbody>

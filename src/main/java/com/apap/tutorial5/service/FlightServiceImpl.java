@@ -3,6 +3,9 @@ package com.apap.tutorial5.service;
 import com.apap.tutorial5.model.FlightModel;
 import com.apap.tutorial5.repository.FlightDB;
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,5 +61,21 @@ public class FlightServiceImpl implements FlightService {
 		flight.setDestination(newFlight.getDestination());
 		flight.setTime(newFlight.getTime());
 		flightDb.save(flight);
+	}
+	
+	@Override
+	public Date getTodayDefaultFlightDate() throws ParseException {
+		java.util.Date dt = new java.util.Date();
+		
+		java.text.SimpleDateFormat sdf =
+				new java.text.SimpleDateFormat("dd-MM-yyyy");
+		
+		String currentTime = sdf.format(dt);
+		
+		SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy");
+		java.util.Date date = sdf2.parse(currentTime);
+		java.sql.Date sqlStartDate = new java.sql.Date(date.getTime());
+		
+		return sqlStartDate;
 	}
 }
