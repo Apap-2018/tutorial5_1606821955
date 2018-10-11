@@ -46,6 +46,25 @@
 			</div>
 		</div>
 	</div>
+	<br>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="card">
+				<div class="card-header">
+					Cari Penerbangan berdasarkan Nomor Penerbangan
+				</div>
+				<form th:action="@{/flight/view}" method="GET">
+					<div class="card-body">
+						<label for="flightNumber">Nomor penerbangan:</label>
+						<input type="text" name="flightNumber" class="form-control" />
+						<p></p>
+						<button type="submit" class="btn btn-primary">Cari</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<br>
 	</div>
 </body>
 	

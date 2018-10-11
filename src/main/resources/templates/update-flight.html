@@ -3,31 +3,48 @@
 
 <head>
 	<title>Update Flight</title>
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	
+	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
 
 <body>
-	<h2>Hello!</h2>
+	<nav th:replace="fragments/fragment :: navbar(pageName='UPDATE PENERBANGAN')"></nav>
 	
-	<h3>Update Penerbangan</h3>
-	<h3 th:text="'Flight ID ' + ': ' + ${flight.id}"></h3>
-	<form th:action="@{/flight/update/}" th:object="${flight}" method="POST">
-		ID: <br>
-    	<input type="text" name="id" th:value ="${flight.id}" readonly = "readonly" />
-		<br>
-		Flight Number: <br>
-    	<input type="text" name="flightNumber" />
-		<br>
-		Origin: <br>
-		<input type="text" name="origin" />
-		<br>
-		Destination: <br>
-		<input type="text" name="destination" />
-		<br>
-		Time: <br>
-		<input type="date" name="time" />
-		<br><br>
-		<button type="submit">Submit</button>
-	</form>
+	<div class="container-fluid">
+	<h2>Hello!</h2>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="card">
+				<div class="card-header">
+					Update Penerbangan
+				</div>
+				<div class="card-body">
+					<form th:action="@{/flight/update/}" th:object="${flight}" method="POST">
+						ID: <br>
+				    	<input type="text" name="id" class="form-control" th:value ="${flight.id}" readonly = "readonly" />
+						<br>
+						Flight Number: <br>
+				    	<input type="text" name="flightNumber" class="form-control" th:value ="${flight.flightNumber}" />
+						<br>
+						Origin: <br>
+						<input type="text" name="origin" class="form-control" th:value ="${flight.origin}" />
+						<br>
+						Destination: <br>
+						<input type="text" name="destination" class="form-control" th:value ="${flight.destination}" />
+						<br>
+						Time: <br>
+						<input type="date" name="time" class="form-control" th:value ="${flight.time}" />
+						<br><br>
+						<button type="submit" class="btn btn-primary">Submit</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
 </body>
 
 </html>

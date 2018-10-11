@@ -61,20 +61,6 @@ public class FlightController {
 		return "addFlight";
 	}
 	
-	@RequestMapping(value = "/flight/add/{licenseNumber}", params={"removeRow"})
-	public String removeRow(@PathVariable(value = "licenseNumber") String licenseNumber,
-						@ModelAttribute PilotModel pilot, Model model,
-						final BindingResult bindingResult, final HttpServletRequest req) {
-		PilotModel pilotOld = pilotService.getPilotDetailByLicenseNumber(licenseNumber);
-		final Integer intId = Integer.valueOf(req.getParameter("removeRow"));
-		
-		pilot.getPilotFlight().get(intId.intValue()).setPilot(pilotOld);
-		pilot.getPilotFlight().remove(intId.intValue());
-		
-		model.addAttribute("licenseNumber", licenseNumber);
-		return "addFlight";
-	}
-	
 	@RequestMapping(value = "/flight/add/{licenseNumber}", method = RequestMethod.POST, params={"save"})
 	private String addFlightSubmit(@PathVariable(value = "licenseNumber") String licenseNumber,
 						@ModelAttribute PilotModel pilot, Model model) {

@@ -3,10 +3,19 @@
 
 <head>
 	<title>Add</title>
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	
+	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
 
 <body>
+	<nav th:replace="fragments/fragment :: navbar(pageName='APAP')"></nav>
+
+	<div class="container-fluid">
 	<h2>Data Berhasil Ditambahkan</h2>
+	</div>
 </body>
 
 </html>

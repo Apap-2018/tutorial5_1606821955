@@ -2,15 +2,42 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>View Pilot</title>
+	<title>View Flight</title>
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	
+	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
 
 <body>
-	<h3 th:text="'Flight Number ' + ': ' + ${flight[0].flightNumber}"></h3>
+	<nav th:replace="fragments/fragment :: navbar(pageName='VIEW PENERBANGAN')"></nav>
 	
-	<h2>Daftar Pilot</h2>
-	<ol th:each="oneflight : ${flight}">
-		<h3 th:text="'Name ' + ': ' + ${oneflight.pilot.name}"></h3>
-		<h3 th:text="'License Number ' + ': ' + ${oneflight.pilot.licenseNumber}"></h3>
-	</ol>
+	<div class="container-fluid">
+	<h2>Hello!</h2>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="card">
+				<div class="card-header" th:text="'Penerbangan Dengan Nomor : ' + ${flight[0].flightNumber}"></div>
+				<div class="card-body">
+					<p class="card-text">Daftar Pilot</p>
+					<table class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th style="text-align: center">Name</th>
+								<th style="text-align: center">License Number</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="oneflight : ${flight}">
+								<td th:text="${oneflight.pilot.name}"></td>
+								<td><a th:href="@{'/pilot/view/?licenseNumber=' + ${oneflight.pilot.licenseNumber}}" th:text="${oneflight.pilot.licenseNumber}"></a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
 </body>
