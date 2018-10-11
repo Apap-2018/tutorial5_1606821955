@@ -6,6 +6,7 @@ import com.apap.tutorial5.service.FlightService;
 import com.apap.tutorial5.service.PilotService;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,39 +29,40 @@ public class FlightController {
 	@Autowired
 	private FlightService flightService;
 	
-	@Autowired
-	private PilotService pilotService;
-	
 	@RequestMapping(value = "/flight/add/{licenseNumber}", method = RequestMethod.GET)
 	private String add(@PathVariable(value = "licenseNumber") String licenseNumber, Model model) {
-		FlightModel flight = new FlightModel();
-		PilotModel pilot = pilotService.getPilotDetailByLicenseNumber(licenseNumber);
-		flight.setPilot(pilot);
+		PilotModel pilot = new PilotModel();
+		pilot.setPilotFlight(new ArrayList<FlightModel>());
+		pilot.getPilotFlight().add(new FlightModel());
 		
-		model.addAttribute("flight", flight);
+		model.addAttribute("pilot", pilot);
 		return "addFlight";
 	}
 	
 	@RequestMapping(value = "/flight/add/{licenseNumber}", params={"addRow"})
-	public String addRow(@ModelAttribute PilotModel pilotModel, Model model) {
-		pilotModel.getPilotFlight().add(new FlightModel());
-		model.addAttribute("pilot", pilotModel);
+	public String addRow(@ModelAttribute PilotModel pilot, Model model) {
+		pilot.getPilotFlight().add(new FlightModel());
+		model.addAttribute("pilot", pilot);
 		
 		return "addFlight";
 	}
 	
 	@RequestMapping(value = "/flight/add/{licenseNumber}", params={"removeRow"})
-	public String removeRow(@ModelAttribute PilotModel pilotModel, Model model,
+	public String removeRow(@ModelAttribute PilotModel pilot, Model model,
 						final BindingResult bindingResult, final HttpServletRequest req) {
 		final Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
-		pilotModel.getPilotFlight().remove(rowId.intValue());
+		pilot.getPilotFlight().remove(rowId.intValue());
 		
 		return "addFlight";
 	}
 	
 	@RequestMapping(value = "/flight/add", method = RequestMethod.POST)
-	private String addFlightSubmit(@ModelAttribute FlightModel flight) {
-		flightService.addFlight(flight);
+	private String addFlightSubmit(@ModelAttribute PilotModel pilot) {
+		for (FlightModel flight : pilot.getPilotFlight()) {
+			flight.setPilot(pilot);
+			flightService.addFlight(flight);
+		}
+		
 		return "add";
 	}
 	

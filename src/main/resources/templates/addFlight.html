@@ -31,16 +31,16 @@
 			<tbody>
 				<tr th:each="flight,iterationStatus : *{pilotFlight}">
 					<td>
-						<input type="text" th:field="*{pilotFlight[__${iterationStatus.index}__].flightNumber" />
+						<input type="text" name="flightNumber" th:field="*{pilotFlight[__${iterationStatus.index}__].flightNumber}" />
 					</td>
 					<td>
-						<input type="text" th:field="*{pilotFlight[__${iterationStatus.index}__].origin" />
+						<input type="text" name="origin" th:field="*{pilotFlight[__${iterationStatus.index}__].origin}" />
 					</td>
 					<td>
-						<input type="text" th:field="*{pilotFlight[__${iterationStatus.index}__].destination" />
+						<input type="text" name="destination" th:field="*{pilotFlight[__${iterationStatus.index}__].destination}" />
 					</td>
 					<td>
-						<input type="date" th:field="*{pilotFlight[__${iterationStatus.index}__].time" />
+						<input type="date" name="time" th:field="*{pilotFlight[__${iterationStatus.index}__].time}" />
 					</td>
 					<td>
 						<button type="submit" name="removeRow" 
@@ -49,7 +49,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<button type="submit">Submit</button>
+		<button type="submit" name="save">Submit</button>
 	</form>
 	</div>
 </body>
